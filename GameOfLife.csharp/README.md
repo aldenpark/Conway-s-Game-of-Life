@@ -148,7 +148,6 @@ curl -s "http://localhost:5000/boards/<BOARD_ID>/final?max_iters=200000"
 Response meta examples:
 { "meta": { "status": "fixed" } }
 { "meta": { "status": "cycle", "period": 2 } }
-
 Payload (custom grid):
 {
   "grid": [

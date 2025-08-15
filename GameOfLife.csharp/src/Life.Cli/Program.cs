@@ -33,8 +33,7 @@ if (GetBool("--help", false))
 // -- build engine -- (random initializer)
 var life = GameOfLife.FromRandom(height, width, dens, seed, new LifeConfig(wrap));
 
-// use a local flag instead of a static field
-bool stop = false;
+bool stop = false;  // Flag to stop animation
 
 if (animate)
 {
