@@ -1,18 +1,19 @@
+/*
+Conway's Game of Life API
+
+This is the entry point for the Game of Life API application.
+It sets up the web host, configures services, and runs the application.
+ 
+Usage:
+dotnet run --project src/Life.Api/Life.Api.csproj
+*/
+
 using Life.Api.Infrastructure;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Annotations;
 
-/**
- * Conway's Game of Life API
- * 
- * This is the entry point for the Game of Life API application.
- * It sets up the web host, configures services, and runs the application.
- * 
- * Usage:
- * dotnet run --project src/Life.Api/Life.Api.csproj
- */
- 
+
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(o => o.ListenAnyIP(5000)); // Bind to port 5000
 builder.AddLifeServices();                  // Add custom services (Entity Framework (EF), Guardrails, Swagger, etc.)

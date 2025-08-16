@@ -1,6 +1,6 @@
 using Life.Api.Data;
 using Life.Api.Domain;
-using Life.Api.DTOs;
+using Life.Api.DTO;
 using Life.Api.Infrastructure; 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Any;
@@ -64,26 +64,6 @@ public class BoardsController : ControllerBase
     [Produces("application/json")]
     [HttpGet("health")]
     public IActionResult Health() => Ok(new { ok = true });
-
-    /// <summary>
-    /// Redirects to the Swagger documentation.
-    /// redirect: /docs -> /swagger
-    /// </summary>
-    /// <returns>Redirects to the Swagger documentation.</returns>
-    /// <remarks>
-    /// This endpoint provides a convenient way to access the API documentation.
-    /// It redirects the user to the Swagger UI where they can explore the API endpoints and their details.
-    /// </remarks>
-    /// <example>
-    /// <code lang="json">
-    /// Redirects to the Swagger UI at /swagger
-    /// </code>
-    /// </example>
-    [ProducesResponseType(StatusCodes.Status302Found)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Produces("application/json")]
-    [HttpGet("docs")]
-    public IActionResult Docs() => Redirect("/swagger");
 
     /// <summary>
     /// Creates a new game board.
@@ -170,6 +150,7 @@ public class BoardsController : ControllerBase
     /// Advances the game board to the next generation.
     /// </summary>
     /// <param name="boardId">Unique identifier for the board</param>
+    /// <param name="repo">Repository to access board data</param>
     /// <returns>Returns the updated state of the board after advancing to the next generation.</returns>
     /// <remarks>
     /// This endpoint allows clients to advance the game board to the next generation.

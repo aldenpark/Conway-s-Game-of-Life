@@ -1,4 +1,4 @@
-namespace Life.Api.DTOs;
+namespace Life.Api.DTO;
 
 /// <summary>
 /// Contains the identifier of a newly created board.

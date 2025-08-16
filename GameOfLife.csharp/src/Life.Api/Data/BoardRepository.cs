@@ -1,6 +1,6 @@
 using System.Text.Json;
-using Life.Api.Domain;
 using Microsoft.EntityFrameworkCore;
+using Life.Api.Domain;
 
 namespace Life.Api.Data;
 
@@ -91,7 +91,6 @@ public sealed class BoardRepository
     /// <summary>
     /// Serializes a 2D grid array to a JSON string.
     /// </summary>
-    /// <param name="grid">2D array representing the grid</param>
     /// <returns>JSON string representation of the grid</returns>
     /// <remarks>
     /// Converts the 2D array to a jagged array for better readability.

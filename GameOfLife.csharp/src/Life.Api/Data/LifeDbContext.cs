@@ -28,16 +28,15 @@ public class LifeDbContext : DbContext
     /// retrieval of the board's state based on its ID.
     /// </remarks>
     /// <example>
-    /// <code>
+    /// <![CDATA[
     /// var options = new DbContextOptionsBuilder<LifeDbContext>()
     ///     .UseSqlite("Data Source=gameoflife.db")
     ///     .Options;
     /// using var context = new LifeDbContext(options);
     /// context.Database.EnsureCreated(); // Ensures the database is created with the defined schema
-    /// </code>
+    /// ]]>
     /// </example>
     /// <returns>The configured model builder.</returns>
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Board>().HasKey(b => b.Id);

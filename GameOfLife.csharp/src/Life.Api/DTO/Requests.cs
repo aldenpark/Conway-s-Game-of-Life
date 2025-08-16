@@ -1,4 +1,4 @@
-namespace Life.Api.DTOs;
+namespace Life.Api.DTO;
 
 /// <summary>
 /// Represents a request to upload a game board.

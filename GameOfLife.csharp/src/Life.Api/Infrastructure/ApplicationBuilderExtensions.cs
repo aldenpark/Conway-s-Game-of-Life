@@ -1,6 +1,6 @@
 using Life.Api.Data;
 using Life.Api.Domain;
-using Life.Api.DTOs;
+using Life.Api.DTO;
 using Microsoft.AspNetCore.Builder;             // IApplicationBuilder
 using Microsoft.AspNetCore.Routing;             // EndpointDataSource, RouteEndpoint, HttpMethodMetadata
 using Microsoft.Extensions.Hosting;             // IHostEnvironment
@@ -52,7 +52,7 @@ public static class ApplicationBuilderExtensions
         app.UseSwaggerUI(c =>                           // Configure Swagger UI
         {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "Conway's Game of Life API v1");
-            c.RoutePrefix = string.Empty;               // Serve Swagger UI at the root URL
+            c.RoutePrefix = "docs";                     // Set the route prefix for Swagger UI
         });
 
         /* ===== DEV DIAGNOSTICS ===== */

@@ -2,12 +2,12 @@ using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
 using Life.Api.Data;
-using Life.Api.DTOs;
+using Life.Api.DTO;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Linq;                              // SingleOrDefault (if implicit usings are off)
+using System.Linq;
 
 namespace Life.Api.Tests;
 

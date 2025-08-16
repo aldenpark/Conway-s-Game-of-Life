@@ -1,0 +1,77 @@
+{
+  "folders": [
+    { "name": "life-csharp", "path": "GameOfLife.csharp" },
+    { "name": "life-python", "path": "GameOfLife.python" },
+    { "name": "life-go",     "path": "GameOfLife.golang" }
+  ],
+  "settings": {
+    // optional: speed up C# file scanning
+    "files.exclude": {
+      "**/bin": true,
+      "**/obj": true,
+      "**/.vs": true
+    }
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Life.Api (debug)",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "build (solution)",
+        "program": "${workspaceFolder:life-csharp}/src/Life.Api/bin/Debug/net8.0/Life.Api.dll",
+        "cwd": "${workspaceFolder:life-csharp}/src/Life.Api",
+        "env": {
+          "ASPNETCORE_ENVIRONMENT": "Development",
+          "ASPNETCORE_URLS": "http://0.0.0.0:5000",
+          "LIFE_DB_PATH": "${workspaceFolder:life-csharp}/life.db",
+          "LIFE_MAX_DIM": "1000",
+          "LIFE_MAX_CELLS": "1000000"
+        },
+        "console": "integratedTerminal",
+        "stopAtEntry": false
+      },
+      {
+        "name": "Life.Cli (debug)",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "build (solution)",
+        "program": "${workspaceFolder:life-csharp}/src/Life.Cli/bin/Debug/net8.0/Life.Cli.dll",
+        "cwd": "${workspaceFolder:life-csharp}/src/Life.Cli",
+        "args": ["--animate", "--width", "80", "--height", "30", "--density", "0.25", "--fps", "15"],
+        "console": "integratedTerminal",
+        "stopAtEntry": false
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build (solution)",
+        "type": "process",
+        "command": "dotnet",
+        "args": [
+          "build",
+          "${workspaceFolder:life-csharp}/Life.sln",
+          "--configuration", "Debug"
+        ],
+        "problemMatcher": "$msCompile",
+        "group": { "kind": "build", "isDefault": true }
+      },
+      {
+        "label": "test (API)",
+        "type": "process",
+        "command": "dotnet",
+        "args": [
+          "test",
+          "${workspaceFolder:life-csharp}/tests/Life.Api.Tests/Life.Api.Tests.csproj",
+          "--no-build"
+        ],
+        "problemMatcher": "$msCompile",
+        "group": "test"
+      }
+    ]
+  }
+}

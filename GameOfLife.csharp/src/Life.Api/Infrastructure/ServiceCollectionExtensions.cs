@@ -9,7 +9,7 @@ namespace Life.Api.Infrastructure;
 /// It also sets up the HTTP request pipeline for the Game of Life API.
 /// </summary>
 /// <remarks>
-/// Uses <see cref="UseLifeInfra"/> to configure the application middleware.
+/// Uses <see cref="AddLifeServices"/> to configure the application middleware.
 /// This class provides methods to configure the application pipeline, including middleware for logging requests,
 /// serving static files, and setting up Swagger UI for API documentation.
 /// It also includes a method to register the application's services.

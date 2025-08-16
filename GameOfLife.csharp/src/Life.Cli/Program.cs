@@ -1,15 +1,15 @@
-﻿using System.Text;
-using Life.Api.Domain; // GameOfLife, LifeConfig
+﻿/*
+Conway's Game of Life CLI
+ 
+This is a simple command-line interface for running Conway's Game of Life.
+It allows you to specify board dimensions, density, animation options, and more.
+ 
+Usage:
+dotnet run --project src/Life.Cli/Life.Cli.csproj -- [options]
+*/
 
-/**
- * Conway's Game of Life CLI
- * 
- * This is a simple command-line interface for running Conway's Game of Life.
- * It allows you to specify board dimensions, density, animation options, and more.
- * 
- * Usage:
- * dotnet run --project src/Life.Cli/Life.Cli.csproj -- [options]
- */
+using System.Text;
+using Life.Api.Domain; // GameOfLife, LifeConfig
 
 // Args: --animate --width=80 --height=30 --density=0.25 --fps=15 --nowrap --seed=42 --steps=100 --chars=" .#"
 var argsDict = ParseArgs(args);

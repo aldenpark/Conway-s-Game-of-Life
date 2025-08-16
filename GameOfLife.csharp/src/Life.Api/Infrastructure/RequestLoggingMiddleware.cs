@@ -32,9 +32,9 @@ public sealed class RequestLoggingMiddleware
     /// The duration is measured using a stopwatch to capture the time taken to process the request.
     /// </remarks>
     /// <example>
-    /// <code>
+    /// <![CDATA[
     /// app.UseMiddleware<RequestLoggingMiddleware>();
-    /// </code>
+    /// ]]>
     /// </example>
     public async Task Invoke(HttpContext ctx)
     {
