@@ -46,7 +46,6 @@ jobs:
       - name: Build (treat warnings as errors)
         run: dotnet build Life.sln --configuration Release --no-restore -warnaserror
 
-      # install dotnet-format (code style)
       - name: Install dotnet-format
         run: dotnet tool install -g dotnet-format
 
@@ -55,7 +54,6 @@ jobs:
 
       - name: Format check
         run: dotnet format --verify-no-changes
-        # continue-on-error: true   # uncomment to allow PRs with formatting issues
 
       - name: Test (with trx + coverage)
         run: >
@@ -64,53 +62,58 @@ jobs:
           --no-build
           --logger "trx;LogFileName=test-results.trx"
           --collect "XPlat Code Coverage"
+          --results-directory ./artifacts/TestResults
 
       - name: List TestResults
         if: always()
         run: |
-          echo "Looking for TestResults under $(pwd)"
-          find . -path "*/TestResults/*" -type f -print || true
+          echo "PWD: $(pwd)"
+          find artifacts/TestResults -type f -print || true
 
       - name: Install reportgenerator
+        if: always()
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
 
       - name: Add dotnet tools to PATH (reportgenerator)
+        if: always()
         run: echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
 
-      # Generate coverage report only if coverage files exist
       - name: Generate coverage report (text + HTML)
         if: always()
         shell: bash
         run: |
           shopt -s globstar nullglob
-          files=( **/TestResults/**/coverage.cobertura.xml )
+          files=( artifacts/TestResults/**/coverage.cobertura.xml )
           if [ ${#files[@]} -eq 0 ]; then
             echo "No coverage.cobertura.xml found; skipping reportgenerator."
             mkdir -p coverage-report
             exit 0
           fi
+          IFS=';'; reports="${files[*]}"; IFS=' '
           reportgenerator \
-            -reports:**/TestResults/**/coverage.cobertura.xml \
+            -reports:"$reports" \
             -targetdir:coverage-report \
             -reporttypes:TextSummary;HtmlInline_AzurePipelines
+          echo "=== Coverage Summary ==="
+          cat coverage-report/Summary.txt
 
-      # Upload test results (won’t fail if nothing to upload)
       - name: Upload test results (trx + coverage)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: |
-            **/TestResults/*.trx
-            **/TestResults/**/coverage.cobertura.xml
+            artifacts/TestResults/*.trx
+            artifacts/TestResults/**/coverage.cobertura.xml
+          if-no-files-found: ignore
 
-      # Upload coverage HTML (won’t fail if folder is empty/missing)
       - name: Upload coverage HTML
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-html
           path: coverage-report
+          if-no-files-found: ignore
 
       - name: Post coverage summary to job log
         if: always()
