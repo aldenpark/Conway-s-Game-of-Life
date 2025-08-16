@@ -45,9 +45,10 @@ jobs:
       - name: Build (treat warnings as errors)
         run: dotnet build Life.sln --configuration Release --no-restore -warnaserror
 
-      # dotnet-format is a dotnet tool; install it before running
+      # install dotnet-format (code style)
       - name: Install dotnet-format
         run: dotnet tool install -g dotnet-format
+
       - name: Add dotnet tools to PATH
         run: echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
 
@@ -63,38 +64,56 @@ jobs:
           --logger "trx;LogFileName=test-results.trx"
           --collect "XPlat Code Coverage"
 
+      - name: List TestResults
+        if: always()
+        run: |
+          echo "Looking for TestResults under $(pwd)"
+          find . -path "*/TestResults/*" -type f -print || true
+
+      - name: Install reportgenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+      - name: Add dotnet tools to PATH (reportgenerator)
+        run: echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+
+      # Generate coverage report only if coverage files exist
+      - name: Generate coverage report (text + HTML)
+        if: always()
+        run: |
+          shopt -s globstar nullglob
+          files=( **/TestResults/**/coverage.cobertura.xml )
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No coverage.cobertura.xml found; skipping reportgenerator."
+            exit 0
+          fi
+          reportgenerator \
+            -reports:**/TestResults/**/coverage.cobertura.xml \
+            -targetdir:coverage-report \
+            -reporttypes:TextSummary;HtmlInline_AzurePipelines
+
+      # Upload test results (won’t fail if nothing to upload)
       - name: Upload test results (trx + coverage)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: |
-            GameOfLife.csharp/**/TestResults/*.trx
-            GameOfLife.csharp/**/TestResults/*/coverage.cobertura.xml
+            **/TestResults/*.trx
+            **/TestResults/**/coverage.cobertura.xml
 
-      - name: Publish test results to PR checks
-        if: always()
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        with:
-          files: GameOfLife.csharp/**/TestResults/*.trx
-
-      - name: Install reportgenerator
-        run: dotnet tool install -g dotnet-reportgenerator-globaltool
-      - name: Add dotnet tools to PATH (reportgenerator)
-        run: echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
-
-      - name: Generate coverage report (text + HTML)
-        run: |
-          reportgenerator \
-            -reports:GameOfLife.csharp/**/TestResults/*/coverage.cobertura.xml \
-            -targetdir:coverage-report \
-            -reporttypes:TextSummary;HtmlInline_AzurePipelines
-
+      # Upload coverage HTML (won’t fail if folder is empty/missing)
       - name: Upload coverage HTML
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-html
           path: coverage-report
 
       - name: Post coverage summary to job log
-        run: cat coverage-report/Summary.txt
+        if: always()
+        run: |
+          if [ -f coverage-report/Summary.txt ]; then
+            cat coverage-report/Summary.txt
+          else
+            echo "No coverage summary generated."
+          fi
