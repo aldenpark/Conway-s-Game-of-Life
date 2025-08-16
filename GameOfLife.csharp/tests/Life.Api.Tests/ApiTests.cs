@@ -157,11 +157,11 @@ public sealed class ApiEndpointTests : IClassFixture<WebApplicationFactory<Progr
     }
 
     /// <summary>
-        /// Tests that the OpenAPI JSON documentation is served correctly.
-        /// This test verifies that the OpenAPI JSON documentation is accessible and returns a successful response.
-        /// It checks that the JSON contains the expected OpenAPI structure.
-        /// </summary>
-        [Fact]
+    /// Tests that the OpenAPI JSON documentation is served correctly.
+    /// This test verifies that the OpenAPI JSON documentation is accessible and returns a successful response.
+    /// It checks that the JSON contains the expected OpenAPI structure.
+    /// </summary>
+    [Fact]
     public async Task Swagger_OpenApi_Json_Is_Served()
     {
         var client = _factory.CreateClient();
