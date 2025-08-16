@@ -34,8 +34,7 @@ public sealed class UploadBoardRequest
     /// If the grid is null or empty, it checks the provided height and width.
     /// If both are null, it returns false with an appropriate error message.
     /// </remarks>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// var request = new UploadBoardRequest { Grid = [[1, 0], [0, 1]] };
     /// if (request.IsValidGrid(out int h, out int w, out string? error))
     /// {
@@ -45,7 +44,6 @@ public sealed class UploadBoardRequest
     /// {
     ///     Console.WriteLine($"Invalid grid: {error}");
     /// }
-    /// </code>
     /// </example>
     public bool IsValidGrid(out int h, out int w, out string? error)
     {

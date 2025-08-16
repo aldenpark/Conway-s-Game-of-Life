@@ -26,11 +26,9 @@ public static class ServiceCollectionExtensions
     /// repositories, and any other services required by the Game of Life API.
     /// It ensures that the database is created and ready for use when the application starts.
     /// </remarks>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// var builder = WebApplication.CreateBuilder(args);
     /// builder.Services.AddLifeServices();
-    /// </code>
     /// </example>
     /// <returns>The configured service collection.</returns>
     public static IServiceCollection AddLifeServices(this WebApplicationBuilder builder)

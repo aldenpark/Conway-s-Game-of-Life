@@ -7,11 +7,9 @@ namespace Life.Api.DTO;
 /// <remarks>
 /// Returned by <c>POST /boards</c> when a board is created successfully.
 /// </remarks>
-/// <example>
-/// <code>
+/// <example lang="csharp">
 /// var response = new BoardResponse("a1b2c3d4e5f6");
 /// Console.WriteLine($"Created board with ID: {response.BoardId}");
-/// </code>
 /// </example>
 public sealed record BoardResponse(string BoardId);
 
@@ -33,8 +31,7 @@ public sealed record BoardResponse(string BoardId);
 /// <remarks>
 /// Returned by <c>GET /boards/{id}</c>, <c>/next</c>, <c>/advance</c>, and <c>/final</c>.
 /// </remarks>
-/// <example>
-/// <code>
+/// <example lang="csharp">
 /// var grid = new[] {
 ///     new[] { 0, 1, 0 },
 ///     new[] { 0, 1, 0 },
@@ -42,7 +39,6 @@ public sealed record BoardResponse(string BoardId);
 /// };
 /// var resp = new GridResponse("a1b2c3", 12, grid, new { status = "cycle", period = 2 });
 /// Console.WriteLine($"Gen {resp.Generation}, cells[1][1]={resp.Grid[1][1]}");
-/// </code>
 /// </example>
 public sealed record GridResponse(
     string BoardId,

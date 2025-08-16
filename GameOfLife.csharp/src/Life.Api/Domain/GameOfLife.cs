@@ -36,8 +36,7 @@ public sealed class GameOfLife
     /// The configuration options can specify whether the board wraps around edges and other parameters.
     /// If the grid is not 2D or contains invalid values, an exception is thrown.
     /// </remarks>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// var grid = new int[,]
     /// {
     ///     { 0, 1, 0 },
@@ -45,7 +44,6 @@ public sealed class GameOfLife
     ///     { 0, 0, 1 }
     /// };
     /// var game = new GameOfLife(grid, new LifeConfig(true));
-    /// </code>
     /// </example>
     /// <returns>A new instance of the GameOfLife class.</returns>
     public GameOfLife(int[,] grid, LifeConfig? config = null)
@@ -69,10 +67,8 @@ public sealed class GameOfLife
     /// If a seed is provided, it ensures that the random grid can be reproduced.
     /// The configuration options can specify whether the board wraps around edges and other parameters.
     /// </remarks>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// var game = GameOfLife.FromRandom(10, 10, 0.25, seed: 42, config: new LifeConfig(true));
-    /// </code>
     /// </example>
     /// <returns>A new GameOfLife instance with a random grid.</returns>
     public static GameOfLife FromRandom(int height, int width, double density = 0.25, int? seed = null, LifeConfig? config = null)
@@ -98,8 +94,7 @@ public sealed class GameOfLife
     /// If the jagged array is empty or the rows have inconsistent lengths, an exception is thrown.
     /// The configuration options can specify whether the board wraps around edges and other parameters.
     /// </remarks>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// var data = new int[][]
     /// {
     ///     new int[] { 0, 1, 0 },
@@ -107,7 +102,6 @@ public sealed class GameOfLife
     ///     new int[] { 0, 0, 1 }
     /// };
     /// var game = GameOfLife.FromList(data, new LifeConfig(true));
-    /// </code>
     /// </example>
     /// <returns>A new GameOfLife instance initialized from the jagged array.</returns>
     public static GameOfLife FromList(int[][] data, LifeConfig? config = null)
@@ -134,10 +128,8 @@ public sealed class GameOfLife
     /// <remarks>
     /// Converts the 2D array to a jagged array for better readability in API responses.
     /// </remarks>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// var data = game.ToJagged();
-    /// </code>
     /// </example>
     /// <returns>Jagged array representation of the grid</returns>
     public int[][] ToJagged()
@@ -162,10 +154,8 @@ public sealed class GameOfLife
     /// If the board is configured to wrap around edges, it handles neighbor calculations accordingly.
     /// The method modifies the Grid property directly, updating the state of the board in place.
     /// </remarks>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// game.Step(); // Advances the game by one generation
-    /// </code>
     /// </example>
     public void Step()
     {
@@ -216,10 +206,8 @@ public sealed class GameOfLife
     /// It repeatedly calls the Step method to update the grid state for each generation.
     /// This allows for simulating multiple generations in a single call.
     /// </remarks>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// game.StepN(5); // Advances the game by 5 generations
-    /// </code>
     /// </example>
     public void StepN(int n)
     {
@@ -237,11 +225,9 @@ public sealed class GameOfLife
     /// If the grid stabilizes (no changes in state), it returns the final state along with information about the stabilization.
     /// If the maximum number of iterations is reached without stabilization or cycles, it returns the current state with a "maxed" status.
     /// </remarks>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// var finalState = game.FinalState(1000);
     /// Console.WriteLine($"Final state after {finalState.Info.Iterations} iterations: {finalState.Info.Status}");
-    /// </code>
     /// </example>
     /// <returns>
     /// A tuple containing the final grid state and information about the final state.
@@ -281,12 +267,10 @@ public sealed class GameOfLife
     /// If the dimensions differ, it returns false.
     /// If the dimensions are the same, it iterates through each element to check for equality.
     /// </remarks>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// var grid1 = new int[,] { { 0, 1 }, { 1, 0 } };
     /// var grid2 = new int[,] { { 0, 1 }, { 1, 0 } };
     /// bool areEqual = GameOfLife.Equal(grid1, grid2);
-    /// </code>
     /// </example>
     /// <returns>True if the grids are equal, false otherwise</returns>
     public static bool Equal(int[,] a, int[,] b)
@@ -307,12 +291,10 @@ public sealed class GameOfLife
     /// It serializes the grid dimensions and cell values into a byte array, which is then hashed using SHA-256.
     /// The resulting hash can be used to uniquely identify the grid state.
     /// </remarks>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// var grid = new int[,] { { 0, 1 }, { 1, 0 } };
     /// string hash = GameOfLife.HashGrid(grid);
     /// Console.WriteLine($"Hash of the grid: {hash}");
-    /// </code>
     /// </example>
     /// <returns>Hexadecimal string representation of the SHA-256 hash of the grid</returns>
     public static string HashGrid(int[,] g)
@@ -343,11 +325,9 @@ public sealed class GameOfLife
     /// <param name="Status">Status of the final state (e.g., "cycle", "fixed", "maxed")</param>
     /// <param name="FirstSeenAt">Optional; the iteration at which the first seen state was encountered (if a cycle was detected)</param>
     /// <param name="Period">Optional; the period of the cycle (if a cycle was detected)</param>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// var info = new FinalInfo(100, "cycle", FirstSeenAt: 50, Period: 10);
     /// Console.WriteLine($"Iterations: {info.Iterations}, Status: {info.Status}, First Seen At: {info.FirstSeenAt}, Period: {info.Period}");
-    /// </code>
     /// </example>
     /// <returns>A record containing information about the final state of the game</returns>
     public readonly record struct FinalInfo(int Iterations, string Status, int? FirstSeenAt = null, int? Period = null);

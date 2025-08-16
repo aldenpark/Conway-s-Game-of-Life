@@ -36,10 +36,8 @@ public static class ApplicationBuilderExtensions
     /// and static file serving for the Game of Life API.
     /// It also includes a method to register the application's services.
     /// </remarks>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// app.UseLifeInfra();
-    /// </code>
     /// </example>
     public static IApplicationBuilder UseLifeInfra(this IApplicationBuilder app)
     {

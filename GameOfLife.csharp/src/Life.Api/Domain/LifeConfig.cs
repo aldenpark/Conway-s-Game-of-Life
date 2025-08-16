@@ -9,9 +9,7 @@ namespace Life.Api.Domain;
 /// This class is used to configure the behavior of the Game of Life, such as whether the board wraps around edges.
 /// It can be extended in the future to include additional configuration options.
 /// </remarks>
-/// <example>
-/// <code>
+/// <example lang="csharp">
 /// var config = new LifeConfig(wrap: true);
-/// </code>
 /// </example>
 public sealed record LifeConfig(bool Wrap = true);

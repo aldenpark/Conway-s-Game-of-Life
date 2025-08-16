@@ -44,10 +44,8 @@ public sealed class Guardrails : IGuardrails
     /// It is used to enforce constraints on the size and complexity of game boards in the Game of Life application.
     /// The bounds message provides a human-readable description of the constraints.
     /// </remarks>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// var guardrails = new Guardrails(100, 10000);    // Creates guardrails with max dimensions of 100 and max cells of 10,000.
-    /// </code>
     /// </example>
     public Guardrails(int maxDim, int maxCells) => (MaxDim, MaxCells) = (maxDim, maxCells);
 
@@ -62,12 +60,10 @@ public sealed class Guardrails : IGuardrails
     /// It returns true if the dimensions are valid, and false if they exceed the allowed limits.
     /// This is used to validate game board dimensions before creating or updating boards in the Game of Life application.
     /// </remarks>
-    /// <example>
-    /// <code>
+    /// <example lang="csharp">
     /// var guardrails = new Guardrails(100, 10000);
     /// bool isValid = guardrails.Allowed(50, 200); // Returns true
     /// isValid = guardrails.Allowed(150, 50); // Returns false
-    /// </code>
     /// </example>
     public bool Allowed(int h, int w) =>
         h > 0 && w > 0 && h <= MaxDim && w <= MaxDim && (long)h * w <= MaxCells;

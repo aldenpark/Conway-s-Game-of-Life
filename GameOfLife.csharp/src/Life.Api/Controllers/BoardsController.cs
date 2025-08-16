@@ -33,10 +33,8 @@ public class BoardsController : ControllerBase
     /// <summary>Root endpoint to check API status.</summary>
     /// <returns>Returns a simple status message indicating the API is running.</returns>
     /// <remarks>This endpoint is used to verify that the API is operational.</remarks>
-    /// <example>
-    /// <code lang="json">
+    /// <example lang="json">
     /// { "status": "ok", "message": "Conway API is running. See /docs." }
-    /// </code>
     /// </example>
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GridResponse))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -54,10 +52,8 @@ public class BoardsController : ControllerBase
     /// It does not perform any complex operations and is designed to be fast and reliable.
     /// It returns a JSON object with a single property "ok" set to true.
     /// </remarks>
-    /// <example>
-    /// <code lang="json">
+    /// <example lang="json">
     /// { "ok": true }
-    /// </code>
     /// </example>
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GridResponse))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -76,12 +72,11 @@ public class BoardsController : ControllerBase
     /// <remarks>
     /// Provide either a rectangular <c>grid</c> of 0/1 values, or <c>height</c>/<c>width</c> to generate randomly.
     /// </remarks>
-    /// <example>
+    /// <example lang="json">
     /// Example request body:
     /// { "grid": [[0, 1], [1, 0]], "height": null, "width": null, "wrap": true, "density": 0.5, "seed": 12345 }
-    /// <code lang="json">
+    /// Example response:
     /// { "id": "a1b2c3d4e5f6" }
-    /// </code>
     /// </example>
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GridResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -125,15 +120,13 @@ public class BoardsController : ControllerBase
     /// The response includes the board's grid, generation number, and any additional metadata.
     /// If the board does not exist, a 404 Not Found error is returned.
     /// </remarks>
-    /// <example>
-    /// <code lang="json">
+    /// <example lang="json">
     /// {
     ///   "id": "a1b2c3d4e5f6",
     ///   "generation": 0,
     ///   "grid": [[0, 1], [1, 0]],
     ///   "meta": null
     /// }
-    /// </code>
     /// </example>
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GridResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -158,15 +151,13 @@ public class BoardsController : ControllerBase
     /// and saves the updated state back to the database.
     /// If the board does not exist, a 404 Not Found error is returned.
     /// </remarks>
-    /// <example>
-    /// <code lang="json">
+    /// <example lang="json">
     /// {
     ///   "id": "a1b2c3d4e5f6",
     ///   "generation": 1,
     ///   "grid": [[0, 1], [1, 0]],
     ///   "meta": null
     /// }
-    /// </code>
     /// </example>
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GridResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -197,15 +188,13 @@ public class BoardsController : ControllerBase
     /// If the board does not exist, a 404 Not Found error is returned.
     /// If n is less than 0 or greater than 1,000,000, a 400 Bad Request error is returned.
     /// </remarks>
-    /// <example>
-    /// <code lang="json">
+    /// <example lang="json">
     /// {
     ///   "id": "a1b2c3d4e5f6",
     ///   "generation": 5,
     ///   "grid": [[0, 1], [1, 0]],
     ///   "meta": null
     /// }
-    /// </code>
     /// </example>
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GridResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -238,8 +227,7 @@ public class BoardsController : ControllerBase
     /// If the board does not exist, a 404 Not Found error is returned.
     /// If the maximum iterations are reached without finding a stable state or cycle, an Unprocessable Entity error is returned.
     /// </remarks>
-    /// <example>
-    /// <code lang="json">
+    /// <example lang="json">
     /// {
     ///   "id": "a1b2c3d4e5f6",
     ///   "generation": 100,
@@ -248,8 +236,6 @@ public class BoardsController : ControllerBase
     ///     "status": "cycle",
     ///     "period": 10
     ///   }
-    /// }
-    /// </code>
     /// </example>
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GridResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
