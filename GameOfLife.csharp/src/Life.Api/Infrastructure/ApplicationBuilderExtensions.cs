@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;             // IHostEnvironment
 using Microsoft.Extensions.DependencyInjection; // IServiceCollection
 using System;                                   // Environment, AppContext
 using System.Linq;                              // Enumerable, OfType, SelectMany, DefaultIfEmpty
+using System.Diagnostics.CodeAnalysis;          // ExcludeFromCodeCoverage
 
 namespace Life.Api.Infrastructure;
 
@@ -21,6 +22,7 @@ namespace Life.Api.Infrastructure;
 /// serving static files, and setting up Swagger UI for API documentation.
 /// It also includes a method to register the application's services.
 /// </remarks>
+[ExcludeFromCodeCoverage]
 public static class ApplicationBuilderExtensions
 {
     /// <summary>
