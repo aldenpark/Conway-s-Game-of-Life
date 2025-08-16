@@ -80,11 +80,13 @@ jobs:
       # Generate coverage report only if coverage files exist
       - name: Generate coverage report (text + HTML)
         if: always()
+        shell: bash
         run: |
           shopt -s globstar nullglob
           files=( **/TestResults/**/coverage.cobertura.xml )
           if [ ${#files[@]} -eq 0 ]; then
             echo "No coverage.cobertura.xml found; skipping reportgenerator."
+            mkdir -p coverage-report
             exit 0
           fi
           reportgenerator \
