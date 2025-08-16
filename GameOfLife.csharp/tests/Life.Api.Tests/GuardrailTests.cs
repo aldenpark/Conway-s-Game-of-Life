@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting;
 using System.Linq;
 
 using Life.Api.Infrastructure;
@@ -41,11 +42,15 @@ public sealed class GuardrailTests : IClassFixture<WebApplicationFactory<Program
     /// <param name="baseFactory">The base WebApplicationFactory to be used for testing.</param>
     public GuardrailTests(WebApplicationFactory<Program> baseFactory)
     {
+        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Testing");
+        Environment.SetEnvironmentVariable("LIFE_SKIP_ENSURE_CREATED", "true");
+
         _conn = new SqliteConnection("DataSource=:memory:");
         _conn.Open();
 
         _factory = baseFactory.WithWebHostBuilder(builder =>
         {
+            builder.UseEnvironment("Testing");
             builder.ConfigureServices(services =>
             {
                 // Replace DbContext to use our shared in-memory connection
