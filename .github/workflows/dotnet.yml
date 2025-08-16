@@ -1,6 +1,7 @@
 name: .NET CI
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - 'GameOfLife.csharp/**'
