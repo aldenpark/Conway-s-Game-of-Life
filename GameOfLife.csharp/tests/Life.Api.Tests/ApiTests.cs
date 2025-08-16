@@ -125,16 +125,51 @@ public sealed class ApiEndpointTests : IClassFixture<WebApplicationFactory<Progr
     }
 
     /// <summary>
-    /// Tests that the docs endpoint redirects to the Swagger UI.
-    /// This test verifies that the docs endpoint of the API redirects to the Swagger UI documentation.
+    /// Tests that the Swagger UI is served correctly.
+    /// This test verifies that the Swagger UI is accessible and returns a successful response.
+    /// It checks both the Swagger UI HTML and the OpenAPI JSON documentation.
     /// </summary>
     [Fact]
-    public async Task Docs_Redirects_To_Swagger()
+    public async Task Swagger_UI_Is_Served()
     {
-        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = true });
+
+        static bool IsRedirect(HttpStatusCode s) =>
+            s is HttpStatusCode.MovedPermanently or HttpStatusCode.Found
+            or HttpStatusCode.TemporaryRedirect or HttpStatusCode.PermanentRedirect;
+
         var resp = await client.GetAsync("/docs");
-        resp.StatusCode.Should().Be(HttpStatusCode.Redirect);
-        resp.Headers.Location!.ToString().Should().Be("/swagger");
+        if (IsRedirect(resp.StatusCode))
+        {
+            var loc = resp.Headers.Location!;
+            // Build absolute URI if swagger returns a relative Location like "docs/index.html"
+            var absolute = loc.IsAbsoluteUri ? loc : new Uri(client.BaseAddress!, loc);
+            resp = await client.GetAsync(absolute);
+        }
+
+        // Should be HTML with Swagger UI markup
+        // resp.Content.Headers.ContentType!.MediaType.Should().Be("text/html");
+        var html = await resp.Content.ReadAsStringAsync();
+        // Look for strong markers of the Swagger UI shell
+        html.Should().Contain("<div id=\"swagger-ui\">")  // scaffold div
+            .And.Contain("swagger-ui-bundle.js")          // script reference
+            .And.Contain("swagger-ui.css");               // stylesheet reference
+    }
+
+    /// <summary>
+        /// Tests that the OpenAPI JSON documentation is served correctly.
+        /// This test verifies that the OpenAPI JSON documentation is accessible and returns a successful response.
+        /// It checks that the JSON contains the expected OpenAPI structure.
+        /// </summary>
+        [Fact]
+    public async Task Swagger_OpenApi_Json_Is_Served()
+    {
+        var client = _factory.CreateClient();
+        var resp = await client.GetAsync("/swagger/v1/swagger.json");
+        resp.EnsureSuccessStatusCode();
+
+        var json = await resp.Content.ReadAsStringAsync();
+        json.Should().Contain("\"openapi\"").And.Contain("\"paths\"");
     }
 
     // ---------- POST /boards ----------

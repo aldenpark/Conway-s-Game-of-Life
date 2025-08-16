@@ -52,10 +52,18 @@ public static class ServiceCollectionExtensions
         svcs.AddEndpointsApiExplorer();
         svcs.AddSwaggerGen();
 
-        // Ensure DB exists on startup
-        using var scope = svcs.BuildServiceProvider().CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<LifeDbContext>();
-        db.Database.EnsureCreated();
+        // after you've registered LifeDbContext, before building the app
+        var skipInit =
+            builder.Configuration.GetValue<bool>("LIFE_SKIP_ENSURE_CREATED") ||
+            builder.Environment.IsEnvironment("Testing");
+
+        if (!skipInit)
+        {
+            // Ensure DB exists on startup if not skipped
+            using var scope = svcs.BuildServiceProvider().CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<LifeDbContext>();
+            db.Database.EnsureCreated();
+        }
 
         return svcs;
     }
