@@ -1,0 +1,100 @@
+name: .NET CI
+
+on:
+  pull_request:
+    paths:
+      - 'GameOfLife.csharp/**'
+      - '.github/workflows/dotnet-ci.yml'
+  push:
+    branches: [ main ]
+    paths:
+      - 'GameOfLife.csharp/**'
+      - '.github/workflows/dotnet-ci.yml'
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  build_test:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: 'true'
+    defaults:
+      run:
+        working-directory: GameOfLife.csharp
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8 SDK (with NuGet cache)
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+          cache: true
+          cache-dependency-path: |
+            GameOfLife.csharp/**/*.csproj
+            GameOfLife.csharp/**/packages.lock.json
+
+      - name: Restore
+        run: dotnet restore Life.sln
+
+      - name: Build (treat warnings as errors)
+        run: dotnet build Life.sln --configuration Release --no-restore -warnaserror
+
+      # dotnet-format is a dotnet tool; install it before running
+      - name: Install dotnet-format
+        run: dotnet tool install -g dotnet-format
+      - name: Add dotnet tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+
+      - name: Format check
+        run: dotnet format --verify-no-changes
+        # continue-on-error: true   # uncomment to allow PRs with formatting issues
+
+      - name: Test (with trx + coverage)
+        run: >
+          dotnet test tests/Life.Api.Tests/Life.Api.Tests.csproj
+          --configuration Release
+          --no-build
+          --logger "trx;LogFileName=test-results.trx"
+          --collect "XPlat Code Coverage"
+
+      - name: Upload test results (trx + coverage)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            GameOfLife.csharp/**/TestResults/*.trx
+            GameOfLife.csharp/**/TestResults/*/coverage.cobertura.xml
+
+      - name: Publish test results to PR checks
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: GameOfLife.csharp/**/TestResults/*.trx
+
+      - name: Install reportgenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+      - name: Add dotnet tools to PATH (reportgenerator)
+        run: echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+
+      - name: Generate coverage report (text + HTML)
+        run: |
+          reportgenerator \
+            -reports:GameOfLife.csharp/**/TestResults/*/coverage.cobertura.xml \
+            -targetdir:coverage-report \
+            -reporttypes:TextSummary;HtmlInline_AzurePipelines
+
+      - name: Upload coverage HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: coverage-report
+
+      - name: Post coverage summary to job log
+        run: cat coverage-report/Summary.txt

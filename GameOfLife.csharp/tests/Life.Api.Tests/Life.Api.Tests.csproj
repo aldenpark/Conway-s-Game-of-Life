@@ -29,4 +29,8 @@
     <ProjectReference Include="..\..\src\Life.Api\Life.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+  </ItemGroup>
+
 </Project>

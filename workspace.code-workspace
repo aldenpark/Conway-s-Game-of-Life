@@ -1,8 +1,20 @@
 {
   "folders": [
-    { "name": "life-csharp", "path": "GameOfLife.csharp" },
-    { "name": "life-python", "path": "GameOfLife.python" },
-    { "name": "life-go",     "path": "GameOfLife.golang" }
+    {
+      "path": ".github"
+    },
+    {
+      "name": "life-csharp",
+      "path": "GameOfLife.csharp"
+    },
+    {
+      "name": "life-python",
+      "path": "GameOfLife.python"
+    },
+    {
+      "name": "life-go",
+      "path": "GameOfLife.golang"
+    }
   ],
   "settings": {
     // optional: speed up C# file scanning
