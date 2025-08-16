@@ -16,8 +16,8 @@ public class Board
 {
     public string Id { get; set; } = default!;
     public int Height { get; set; }
-    public int Width  { get; set; }
-    public bool Wrap  { get; set; }
+    public int Width { get; set; }
+    public bool Wrap { get; set; }
     public int Generation { get; set; }
 }
 

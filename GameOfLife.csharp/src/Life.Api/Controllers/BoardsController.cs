@@ -1,7 +1,7 @@
 using Life.Api.Data;
 using Life.Api.Domain;
 using Life.Api.DTO;
-using Life.Api.Infrastructure; 
+using Life.Api.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;

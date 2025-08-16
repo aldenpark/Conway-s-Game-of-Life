@@ -14,15 +14,15 @@ using Life.Api.Domain; // GameOfLife, LifeConfig
 // Args: --animate --width=80 --height=30 --density=0.25 --fps=15 --nowrap --seed=42 --steps=100 --chars=" .#"
 var argsDict = ParseArgs(args);
 
-int width   = GetInt("--width",  80);
-int height  = GetInt("--height", 30);
+int width = GetInt("--width", 80);
+int height = GetInt("--height", 30);
 double dens = GetDouble("--density", 0.25);
-int steps   = GetInt("--steps", 100);
-bool animate= GetBool("--animate", false);
-int fps     = GetInt("--fps", 10);
-bool wrap   = !GetBool("--nowrap", false);
-int? seed   = GetNullableInt("--seed");
-string chars= GetString("--chars", " #"); // dead, alive
+int steps = GetInt("--steps", 100);
+bool animate = GetBool("--animate", false);
+int fps = GetInt("--fps", 10);
+bool wrap = !GetBool("--nowrap", false);
+int? seed = GetNullableInt("--seed");
+string chars = GetString("--chars", " #"); // dead, alive
 
 if (GetBool("--help", false))
 {
@@ -46,7 +46,7 @@ if (animate)
     {
         Console.SetCursorPosition(0, 0);
         Console.Write(Render(life.Grid, chars));
-        Console.WriteLine($"\nGen: {i+1}  Size: {height}x{width}  Wrap: {wrap}  Seed: {(seed?.ToString() ?? "-")}");
+        Console.WriteLine($"\nGen: {i + 1} Size: {height}x{width} Wrap: {wrap} Seed: {(seed?.ToString() ?? "-")}");
         life.Step();            // Perform a single step in the Game of Life
         Thread.Sleep(delay);
     }
