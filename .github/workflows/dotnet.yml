@@ -1,7 +1,6 @@
 name: .NET CI
 
 on:
-  workflow_dispatch:
   pull_request:
     paths:
       - 'GameOfLife.csharp/**'
@@ -11,6 +10,7 @@ on:
     paths:
       - 'GameOfLife.csharp/**'
       - '.github/workflows/dotnet-ci.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -93,7 +93,7 @@ jobs:
           reportgenerator \
             -reports:"$reports" \
             -targetdir:coverage-report \
-            -reporttypes:TextSummary;HtmlInline_AzurePipelines
+            -reporttypes:"TextSummary;HtmlInline_AzurePipelines"
           echo "=== Coverage Summary ==="
           cat coverage-report/Summary.txt
 
