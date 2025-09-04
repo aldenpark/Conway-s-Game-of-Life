@@ -5,6 +5,7 @@
 Folders
 -------------------------------------------------------------------------------
 - [GameOfLife.csharp/](GameOfLife.csharp/)      → .NET 8 Web API (SQLite + Swagger + tests)
+- [GameOfLife.nodejs/](GameOfLife.nodejs/)      → Node.js/Express API + SQLite + CLI
 - GameOfLife.python/     → (planned) FastAPI service + CLI
 - GameOfLife.golang/     → (planned) Go HTTP service + CLI
 
@@ -18,24 +19,56 @@ C# (implemented) — highlights
 - Structured JSON logging middleware
 - Tests: rules, cycle/fixed, endpoints, guardrails
 
-Quick start
+```
+# Quick start
   cd GameOfLife.csharp
   dotnet restore
   dotnet build
   dotnet test
 
-Run API (default: http://localhost:5000):
+# Run API (default: http://localhost:5000):
   export ASPNETCORE_URLS=http://0.0.0.0:5000
   export LIFE_DB_PATH=/tmp/life.db
   export LIFE_MAX_DIM=1000
   export LIFE_MAX_CELLS=1000000
   dotnet run --project src/Life.Api/Life.Api.csproj
+```
 
 Swagger:  http://localhost:5000/swagger
 Health:   http://localhost:5000/health
 
 See the C# README for full details:
 ./GameOfLife.csharp/README.md
+
+-------------------------------------------------------------------------------
+Node.js (implemented) — highlights
+-------------------------------------------------------------------------------
+- Express HTTP API with SQLite persistence and concise pino JSON logs
+- Shared domain logic (wrap/nowrap, RNG seeding, cycle/fixed final state)
+- CLI (`life-cli`) for terminal rendering (animate or step N)
+- Guardrails via env (`MAX_DIM`, `MAX_CELLS`), same API contract as C#
+- New: comprehensive in-code comments documenting design and behavior in:
+  - `src/models/life.js` (rules, neighbors, RNG seed, cycle detection)
+  - `src/db/repository.js` (schema, WAL, gzip pack/unpack, upserts)
+  - `src/routes/boards.js` (endpoint semantics, validation, guardrails)
+  - `src/logger.js` (log shape, serializers), `src/server.js` (bootstrap)
+  - `bin/life-cli.js` (usage/animation rendering)
+
+```
+# Quick start
+  cd GameOfLife.nodejs
+  npm install
+  npm run dev             # http://localhost:8000
+# or
+  npm start               # production mode
+
+# CLI examples
+  npx life-cli --height 20 --width 50 --density 0.3 --steps 10
+  npx life-cli --animate --fps 12 --seed 42
+```
+
+Health:   http://localhost:8000/health
+README:   ./GameOfLife.nodejs/README.md
 
 -------------------------------------------------------------------------------
 Python (upcoming) — plan
